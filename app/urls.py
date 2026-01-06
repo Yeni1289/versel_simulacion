@@ -1,7 +1,12 @@
 from django.urls import path
-from .views import dashboard, ver_practica
+from . import views
 
 urlpatterns = [
-    path("", dashboard, name="dashboard"),   # 👈 RUTA RAÍZ
-    path("ver/<int:numero>/", ver_practica, name="ver_practica"),
+    path('', views.dashboard, name='dashboard'),
+
+    # CON slash
+    path('ver/<int:numero>/', views.ver_practica, name='ver_practica'),
+
+    # SIN slash (🔥 CLAVE PARA RAILWAY 🔥)
+    path('ver/<int:numero>', views.ver_practica),
 ]
