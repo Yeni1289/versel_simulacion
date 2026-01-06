@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 from app import views
 
 urlpatterns = [
@@ -24,8 +24,9 @@ urlpatterns = [
     # Dashboard
     path('', views.dashboard, name='dashboard'),
 
-    # Prácticas (CON y SIN slash)
+    # Prácticas (CON slash)
     path('ver/<int:numero>/', views.ver_practica, name='ver_practica'),
+
+    # Prácticas (SIN slash)
     path('ver/<int:numero>', views.ver_practica),
 ]
-
