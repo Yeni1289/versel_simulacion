@@ -105,8 +105,6 @@ python-json-logger==4.0.0
 PythonTurtle==0.3.2
 pytz==2025.2
 pywalk==0.0.2
-pywin32==308
-pywinpty==3.0.2
 PyYAML==6.0.3
 pyzmq==26.2.0
 referencing==0.37.0
