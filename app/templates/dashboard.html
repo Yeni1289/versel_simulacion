@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="mb-4">📚 Prácticas del Curso</h2>
+
+<div class="list-group shadow-sm">
+  {% for p in practicas %}
+    <a href="/ver/{{ p.numero }}/"
+       class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+      Práctica {{ p.numero }}
+      <span class="badge bg-primary rounded-pill">Ver</span>
+    </a>
+  {% endfor %}
+</div>
+{% endblock %}

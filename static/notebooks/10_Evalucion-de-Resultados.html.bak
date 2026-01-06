@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Evaluación de Resultados - NSL-KDD</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 40px;
+            font-family: "Segoe UI", Tahoma, sans-serif;
+            background: linear-gradient(135deg, #1c1c3c, #2a2a72);
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: auto;
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 40px;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2a2a72;
+        }
+
+        h2 {
+            margin-top: 45px;
+            color: #1c1c3c;
+            border-left: 6px solid #ff5722;
+            padding-left: 12px;
+        }
+
+        h3 {
+            margin-top: 25px;
+            color: #ff5722;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #333;
+        }
+
+        ul {
+            margin-left: 25px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .card {
+            background: #f5f7fa;
+            border-radius: 14px;
+            padding: 25px;
+            margin: 25px 0;
+            border-left: 6px solid #2a2a72;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .box {
+            background: linear-gradient(135deg, #ff5722, #ff8a50);
+            color: white;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+        }
+
+        pre {
+            background: #1e1e1e;
+            color: #dcdcdc;
+            padding: 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+
+        code {
+            font-family: Consolas, monospace;
+        }
+
+        .note {
+            background: #e3f2fd;
+            border-left: 6px solid #2196f3;
+            padding: 18px;
+            border-radius: 12px;
+            margin: 25px 0;
+        }
+
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Evaluación de Resultados</h1>
+
+    <p>
+        En este notebook se muestran diferentes <strong>técnicas para la evaluación de los
+        resultados</strong> obtenidos a partir de un algoritmo de
+        <strong>Machine Learning</strong>, utilizando el dataset
+        <strong>ISCX NSL-KDD</strong>.
+    </p>
+
+    <h2>📂 DataSet</h2>
+
+    <div class="card">
+        <p>
+            El conjunto de datos <strong>ISCX NSL-KDD</strong> fue propuesto para resolver
+            problemas del dataset KDD’99, como la redundancia de registros y el sesgo
+            en la evaluación de algoritmos de detección de intrusiones.
+        </p>
+    </div>
+
+    <h3>Archivos disponibles</h3>
+    <ul>
+        <li>KDDTrain+.ARFF</li>
+        <li>KDDTrain+.TXT</li>
+        <li>KDDTrain+_20Percent.ARFF</li>
+        <li>KDDTest+.ARFF</li>
+        <li>KDDTest-21.ARFF</li>
+    </ul>
+
+    <h2>📥 Lectura de los Datos</h2>
+
+    <pre><code>
+df = load_kdd_dataset(
+    r"C:\Users\yanet\OneDrive\Documentos\ANTLR\datasets\NSL-KDD\KDDTrain+.arff"
+)
+df.head(10)
+    </code></pre>
+
+    <h2>✂ División del DataSet</h2>
+
+    <pre><code>
+train_set, val_set, test_set = train_val_test_split(
+    df, stratify='protocol_type'
+)
+
+print("Training:", len(train_set))
+print("Validation:", len(val_set))
+print("Test:", len(test_set))
+    </code></pre>
+
+    <div class="note">
+        <strong>Resultado:</strong><br>
+        Training Set: 75,583 registros<br>
+        Validation Set: 25,195 registros<br>
+        Test Set: 25,195 registros
+    </div>
+
+    <h2>📊 Separación de características y etiquetas</h2>
+
+    <pre><code>
+# Dataset completo
+X_df = df.drop("class", axis=1)
+y_df = df["class"].copy()
+
+# Entrenamiento
+X_train = train_set.drop("class", axis=1)
+y_train = train_set["class"].copy()
+
+# Validación
+X_val = val_set.drop("class", axis=1)
+y_val = val_set["class"].copy()
+
+# Pruebas
+X_test = test_set.drop("class", axis=1)
+y_test = test_set["class"].copy()
+    </code></pre>
+
+    <h2>⚙ Preparación del DataSet</h2>
+
+    <pre><code>
+# Instanciar el transformador personalizado
+data_preparer = DataFramePreparer()
+
+# Ajustar con el dataset completo
+data_preparer.fit(X_df)
+
+# Transformar el conjunto de entrenamiento
+X_train_prep = data_preparer.transform(X_train)
+
+# Transformar el conjunto de validación
+X_val_prep = data_preparer.transform(X_val)
+    </code></pre>
+
+    <h2>🤖 Entrenamiento del Modelo</h2>
+
+    <p>
+        Se entrena un modelo basado en <strong>Regresión Logística</strong> utilizando
+        la API de Scikit-Learn.
+    </p>
+
+    <pre><code>
+from sklearn.linear_model import LogisticRegression
+
+clf = LogisticRegression(max_iter=5000)
+clf.fit(X_train_prep, y_train)
+    </code></pre>
+
+    <h2>🔮 Predicción de Nuevos Ejemplos</h2>
+
+    <p>
+        Se utilizan los datos de validación para evaluar el desempeño del modelo entrenado.
+    </p>
+
+    <pre><code>
+y_pred = clf.predict(X_val_prep)
+    </code></pre>
+
+    <div class="footer">
+        Evaluación de Resultados | NSL-KDD · Machine Learning · Scikit-Learn
+    </div>
+
+</div>
+
+</body>
+</html>

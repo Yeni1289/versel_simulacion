@@ -1,0 +1,112 @@
+:root {
+  --bg: #f6f8fa;
+  --primary: #0d6efd;
+  --muted: #6c757d;
+  --card: #ffffff;
+  --accent: #7c3aed;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(180deg, #eef2ff 0%, #f8fafc 100%);
+  font-family: "Inter", Arial, sans-serif;
+  color: #0f172a;
+}
+
+/* Sidebar */
+.sidebar {
+  background: linear-gradient(135deg, rgba(124,58,237,0.06), rgba(13,110,253,0.03));
+  border-radius: 12px;
+  min-height: 80vh;
+}
+
+.sidebar h5 {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* Lista de prácticas */
+.practice-list { padding: 0; margin: 0; }
+.practice-list .practice-item { padding: 0.5rem 0.5rem; border-bottom: 1px solid rgba(15,23,42,0.04); display:flex; justify-content:space-between; align-items:center; }
+.practice-list .practice-item:last-child { border-bottom: none; }
+.practice-list .practice-item .fw-bold { font-weight: 700; }
+.practice-list .active-practice { background: linear-gradient(90deg, rgba(124,58,237,0.08), rgba(13,110,253,0.03)); border-left: 4px solid var(--accent); border-radius: 6px; padding-left: 0.75rem; }
+
+.nav-link {
+  color: #0f172a;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-link:hover {
+  background: rgba(13,110,253,0.06);
+  text-decoration: none;
+}
+
+.active-link {
+  background: linear-gradient(90deg, rgba(124,58,237,0.12), rgba(13,110,253,0.08));
+  border-left: 4px solid var(--accent);
+}
+
+/* Visor card */
+.visor-card {
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.visor-card .card-header {
+  background: linear-gradient(90deg, rgba(255,255,255,0.9), rgba(255,255,255,0.85));
+  border-bottom: 1px solid rgba(15,23,42,0.06);
+}
+
+.visor-card h5 { margin: 0; }
+
+.contenedor-iframe {
+  height: calc(100vh - 200px);
+}
+
+.contenedor-iframe iframe {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  border: 1px solid rgba(15,23,42,0.06);
+  box-shadow: 0 8px 20px rgba(15,23,42,0.08);
+}
+
+/* Practice card in sidebar */
+.practice-card {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(15,23,42,0.04);
+  border: 1px solid rgba(15,23,42,0.04);
+}
+.practice-card h6 {
+  margin: 0 0 0.25rem 0;
+  font-weight: 700;
+}
+.practice-card .btn {
+  min-width: 160px;
+  border-radius: 8px;
+}
+.practice-card .nav-link {
+  padding: 0;
+  margin-top: 0.5rem;
+}
+
+/* Buttons */
+.btn-group .btn {
+  border-radius: 6px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .sidebar { min-height: auto; margin-bottom: 1rem; }
+  .contenedor-iframe { height: 60vh; }
+}
+
+/* Small utility */
+.text-muted { color: var(--muted) !important; }

@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row g-3">
+  <div class="col-md-3">
+    <aside class="card p-3 sidebar">
+      <h5 class="mb-3">📚 Prácticas</h5>
+      <ul class="nav flex-column">
+        {% for p in practicas %}
+          <li class="nav-item mb-1">
+            <a class="nav-link d-flex justify-content-between align-items-center {% if p.numero == numero %}active-link{% endif %}"
+               href="{% url 'ver_practica' p.numero %}">
+               <span>Práctica {{p.numero}}</span>
+               <small class="text-muted">{{p.titulo}}</small>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </aside>
+  </div>
+
+  <div class="col-md-9">
+    <div class="card visor-card shadow-sm">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <div>
+          <h5 class="mb-0">Práctica {{numero}} — {{titulo}}</h5>
+        </div>
+        <div class="btn-group">
+          {% if prev_num %}
+            <a class="btn btn-outline-secondary" href="{% url 'ver_practica' prev_num %}">« Prev</a>
+          {% endif %}
+          {% if numero < 5 or numero > 10 %}
+            <button id="toggle-code" class="btn btn-outline-info" type="button">Mostrar código</button>
+          {% endif %}
+          {% if numero >= 5 and numero <= 10 %}
+            <button id="toggle-code-2" class="btn btn-outline-info" type="button">Mostrar código</button>
+            <button id="open-code-tab" class="btn btn-outline-secondary" type="button">Abrir con código</button>
+          {% endif %}
+          <a class="btn btn-primary" href="{% static archivo %}" target="_blank" rel="noopener">Abrir en nueva pestaña</a>
+          {% if next_num %}
+            <a class="btn btn-outline-secondary" href="{% url 'ver_practica' next_num %}">Next »</a>
+          {% endif %}
+        </div>
+      </div>
+      <div class="card-body p-0">
+        <div class="contenedor-iframe p-3">
+          <iframe src="{% static archivo %}" frameborder="0" allowfullscreen title="Práctica {{numero}}"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const iframe = document.querySelector('.contenedor-iframe iframe');
+  function enhance(){
+    try {
+      const doc = iframe.contentDocument || iframe.contentWindow.document;
+      if (!doc) return;
+      // No inyectamos estilos ni añadimos insignia ni padding; mostramos el HTML tal cual
+
+    } catch(e){
+      console.warn('No se pudo inyectar el estilo en el iframe', e);
+    }
+  }
+  iframe.addEventListener('load', enhance);
+  if (iframe.contentDocument && iframe.contentDocument.readyState === 'complete'){
+    enhance();
+  }
+
+  // Botón para mostrar/ocultar código dentro del iframe
+  const toggleBtn = document.getElementById('toggle-code');
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', function(){
+      try {
+        const doc = iframe.contentDocument || iframe.contentWindow.document;
+        if (!doc) return;
+        const body = doc.body || doc.documentElement;
+        if (body.classList.contains('show-code')){
+          body.classList.remove('show-code');
+          toggleBtn.textContent = 'Mostrar código';
+        } else {
+          body.classList.add('show-code');
+          toggleBtn.textContent = 'Ocultar código';
+        }
+      } catch(e){
+        console.warn('No se pudo alternar la visibilidad del código', e);
+        alert('No se pudo alternar la visibilidad del código en este navegador.');
+      }
+    });
+  }
+
+  // Botón para alternar entre la versión simplificada y la versión *2.html (para prácticas 05–10)
+  const toggleBtn2 = document.getElementById('toggle-code-2');
+  if (toggleBtn2) {
+    // Obtenemos la fuente original del iframe (relativa)
+    const originalSrc = iframe.getAttribute('src') || iframe.src;
+    const codeSrc = originalSrc.replace(/\.html$/i, '2.html');
+    toggleBtn2.addEventListener('click', function(){
+      try {
+        const current = iframe.getAttribute('src') || iframe.src;
+        if (current.endsWith('2.html')){
+          iframe.setAttribute('src', originalSrc);
+          toggleBtn2.textContent = 'Mostrar código';
+        } else {
+          iframe.setAttribute('src', codeSrc);
+          toggleBtn2.textContent = 'Ocultar código';
+        }
+      } catch(e){
+        console.warn('No se pudo alternar entre versiones', e);
+      }
+    });
+
+    // Botón para abrir la versión con código en nueva pestaña
+    const openCodeBtn = document.getElementById('open-code-tab');
+    if (openCodeBtn){
+      openCodeBtn.addEventListener('click', function(){
+        try {
+          window.open(codeSrc, '_blank', 'noopener');
+        } catch(e){
+          console.warn('No se pudo abrir la versión con código en nueva pestaña', e);
+        }
+      });
+    }
+  }
+});
+</script>
+
+{% endblock %}

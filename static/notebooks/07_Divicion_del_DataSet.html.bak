@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>División del DataSet - NSL-KDD</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 40px;
+            font-family: "Segoe UI", Tahoma, sans-serif;
+            background: linear-gradient(120deg, #141e30, #243b55);
+            color: #333;
+        }
+
+        .container {
+            max-width: 1150px;
+            margin: auto;
+            background: #ffffff;
+            border-radius: 18px;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.25);
+            padding: 45px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #141e30;
+            margin-bottom: 5px;
+        }
+
+        h2 {
+            color: #243b55;
+            margin-top: 45px;
+            border-left: 6px solid #243b55;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #1b2a41;
+        }
+
+        p {
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        .highlight {
+            background: #f0f4f8;
+            border-left: 6px solid #141e30;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 25px 0;
+        }
+
+        .cards {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        .card {
+            flex: 1;
+            min-width: 280px;
+            background: linear-gradient(135deg, #243b55, #141e30);
+            color: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        ul li {
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+        }
+
+        table th {
+            background: #243b55;
+            color: white;
+            padding: 14px;
+        }
+
+        table td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .footer {
+            margin-top: 60px;
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>División del DataSet</h1>
+    <h3 style="text-align:center;">NSL-KDD – Preparación de Datos</h3>
+
+    <div class="highlight">
+        <p>
+            En este Notebook se presentan algunos de los mecanismos más utilizados para la
+            <strong>división del DataSet</strong>, un paso fundamental dentro del flujo de trabajo
+            de <strong>Machine Learning</strong>.
+        </p>
+    </div>
+
+    <h2>Descripción del DataSet</h2>
+
+    <p>
+        El <strong>ISCX NSL-KDD dataset (2009)</strong> fue diseñado como una mejora del dataset
+        KDD’99, resolviendo problemas de redundancia y sesgo en los datos de entrenamiento y prueba.
+    </p>
+
+    <p>
+        Aunque este dataset ya no se encuentra disponible públicamente, sigue siendo ampliamente
+        utilizado como <strong>benchmark</strong> en la investigación de sistemas de detección de
+        intrusos (IDS).
+    </p>
+
+    <h2>Archivos disponibles</h2>
+
+    <table>
+        <tr>
+            <th>Archivo</th>
+            <th>Descripción</th>
+        </tr>
+        <tr>
+            <td>KDDTrain+.ARFF</td>
+            <td>Conjunto completo de entrenamiento</td>
+        </tr>
+        <tr>
+            <td>KDDTrain+_20Percent.ARFF</td>
+            <td>Subconjunto del 20% del entrenamiento</td>
+        </tr>
+        <tr>
+            <td>KDDTest+.ARFF</td>
+            <td>Conjunto completo de pruebas</td>
+        </tr>
+        <tr>
+            <td>KDDTest-21.ARFF</td>
+            <td>Conjunto de pruebas sin registros de máxima dificultad</td>
+        </tr>
+    </table>
+
+    <h2>Objetivo de la división del DataSet</h2>
+
+    <div class="cards">
+        <div class="card">
+            <h3>🎯 Entrenamiento</h3>
+            <p>
+                Utilizado para ajustar los parámetros del modelo y permitirle aprender los
+                patrones presentes en los datos.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>🧪 Validación</h3>
+            <p>
+                Permite evaluar el modelo durante el entrenamiento y ajustar hiperparámetros
+                sin usar el conjunto de prueba.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>📊 Pruebas</h3>
+            <p>
+                Se utiliza únicamente para medir el rendimiento final del modelo entrenado.
+            </p>
+        </div>
+    </div>
+
+    <h2>Divisió

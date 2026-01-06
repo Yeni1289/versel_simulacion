@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Preparación del DataSet - NSL-KDD</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 40px;
+            font-family: "Segoe UI", Tahoma, sans-serif;
+            background: linear-gradient(120deg, #0f2027, #203a43, #2c5364);
+            color: #333;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #0f2027;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #2c5364;
+            margin-top: 40px;
+            border-left: 6px solid #2c5364;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #203a43;
+        }
+
+        p {
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        .info-box {
+            background: #eef4f7;
+            border-left: 6px solid #0f2027;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 25px 0;
+        }
+
+        .cards {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .card {
+            flex: 1;
+            min-width: 260px;
+            background: linear-gradient(135deg, #2c5364, #0f2027);
+            color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+        }
+
+        .card h3 {
+            margin-top: 0;
+        }
+
+        ul {
+            margin-top: 10px;
+        }
+
+        ul li {
+            margin-bottom: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th {
+            background: #2c5364;
+            color: white;
+            padding: 12px;
+        }
+
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Preparación del DataSet</h1>
+    <p>
+        En este Notebook se muestran algunos de los mecanismos más utilizados para la
+        <strong>preparación del DataSet</strong> aplicado a problemas de
+        <strong>Detección de Intrusiones</strong>.
+    </p>
+
+    <h2>📂 DataSet</h2>
+
+    <div class="card">
+        <p>
+            <strong>ISCX NSL-KDD Dataset (2009)</strong> es una versión mejorada del KDD’99,
+            diseñada para solucionar problemas como la redundancia de registros y el sesgo
+            en los algoritmos de aprendizaje automático.
+        </p>
+    </div>
+
+    <h3>Archivos disponibles</h3>
+
+    <ul>
+        <li>KDDTrain+.ARFF</li>
+        <li>KDDTrain+.TXT</li>
+        <li>KDDTrain+_20Percent.ARFF</li>
+        <li>KDDTest+.ARFF</li>
+        <li>KDDTest-21.ARFF</li>
+    </ul>
+
+    <h2>📈 Mejoras sobre KDD’99</h2>
+
+    <div class="grid">
+        <div class="box">
+            <h3>✔ Sin duplicados</h3>
+            <p>Elimina registros redundantes para evitar sesgos.</p>
+        </div>
+
+        <div class="box">
+            <h3>⚖ Balance</h3>
+            <p>Distribución proporcional por nivel de dificultad.</p>
+        </div>
+
+        <div class="box">
+            <h3>📊 Evaluación justa</h3>
+            <p>Resultados comparables entre diferentes técnicas.</p>
+        </div>
+    </div>
+
+    <h2>1️⃣ Lectura del DataSet</h2>
+
+    <pre><code>
+df = load_kdd_dataset(

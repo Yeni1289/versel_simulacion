@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Transformadores y Pipelines Personalizados - NSL-KDD</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 40px;
+            font-family: "Segoe UI", Tahoma, sans-serif;
+            background: linear-gradient(120deg, #0f2027, #203a43, #2c5364);
+            color: #333;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #0f2027;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #2c5364;
+            margin-top: 40px;
+            border-left: 6px solid #2c5364;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #203a43;
+        }
+
+        p {
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        .info-box {
+            background: #eef4f7;
+            border-left: 6px solid #0f2027;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 25px 0;
+        }
+
+        .cards {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .card {
+            flex: 1;
+            min-width: 260px;
+            background: linear-gradient(135deg, #2c5364, #0f2027);
+            color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+        }
+
+        .card h3 {
+            margin-top: 0;
+        }
+
+        ul {
+            margin-top: 10px;
+        }
+
+        ul li {
+            margin-bottom: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th {
+            background: #2c5364;
+            color: white;
+            padding: 12px;
+        }
+
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Creación de Transformadores y Pipelines Personalizados</h1>
+
+    <p>
+        En este notebook se muestra la creación de <strong>transformadores</strong> y
+        <strong>pipelines personalizados</strong> utilizando la API de
+        <strong>Scikit-Learn</strong>, aplicados al conjunto de datos
+        <strong>ISCX NSL-KDD (2009)</strong>.
+    </p>
+
+    <h2>📂 DataSet</h2>
+
+    <div class="card">
+        <p>
+            <strong>ISCX NSL-KDD</strong> es una versión mejorada del conjunto de datos KDD’99,
+            propuesta para resolver problemas como la redundancia de registros y el sesgo
+            en los algoritmos de aprendizaje automático.
+        </p>
+    </div>
+
+    <h3>Archivos disponibles</h3>
+    <ul>
+        <li>KDDTrain+.ARFF</li>
+        <li>KDDTrain+.TXT</li>
+        <li>KDDTrain+_20Percent.ARFF</li>
+        <li>KDDTest+.ARFF</li>
+        <li>KDDTest-21.ARFF</li>
+    </ul>
+
+    <h2>📈 Mejoras sobre KDD’99</h2>
+
+    <div class="grid">
+        <div class="box">
+            <h3>✔ Sin duplicados</h3>
+            <p>Elimina registros redundantes en entrenamiento y prueba.</p>
+        </div>
+        <div class="box">
+            <h3>⚖ Balance</h3>
+            <p>Distribución proporcional por niveles de dificultad.</p>
+        </div>
+        <div class="box">
+            <h3>📊 Evaluación justa</h3>
+            <p>Resultados consistentes y comparables entre modelos.</p>
+        </div>
+    </div>
+
+    <h2>📥 Lectura del DataSet</h2>
+
+    <pre><code>
+df = load_kdd_dataset(
+    r"C:\Users\yanet\OneDrive\Documentos\ANTLR\datasets\NSL-KDD\KDDTrain+.arff"
+)
+    </code></pre>
+
+    <h2>✂ División del DataSet</h2>
+
+    <pre><code>
+train_set, val_set, test_set = train_val_test_split(
+    df, stratify='protocol_type'
+)
+
+print("Training:", len(train_set))
+print("Validation:", len(val_set))
+print("Test:", len(test_set))
+    </code></pre>
+
+    <div class="note">
+        <strong>Resultado:</strong><br>
+        Training Set: 75,583 registros<br>
+        Validation Set: 25,195 registros<br>
+        Test Set: 25,195 registros
+    </div>
+
+    <h2>⚙ API de Scikit-Learn</h2>
+
+    <div class="card">
+        <ul>
+            <li><strong>Estimators:</strong> implementan <code>fit()</code></li>
+            <li><strong>Transformers:</strong> implementan <code>transform()</code></li>
+            <li><strong>Predictors:</strong> implementan <code>predict()</code> y <code>score()</code></li>
+        </ul>
+    </div>
+
+    <h2>1️⃣ Transformadores Personalizados</h2>
+
+    <h3>Eliminar filas con valores nulos</h3>
+
+    <pre><code>
+from sklearn.base import BaseEstimator, TransformerMixin
+
+class DeleteNanRows(BaseEstimator, TransformerMixin):
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X, y=None):
+        return X.dropna()
+    </code></pre>
+
+    <h3>Codificación One-Hot personalizada</h3>
+
+    <pre><code>
+from sklearn.preprocessing import OneHotEncoder
+import pandas as pd
+
+class CustomOneHotEncoder(BaseEstimator, TransformerMixin):
+    def __init__(self, sparse=False):
+        self._oh = OneHotEncoder(
+            sparse=sparse,
+            handle_unknown='ignore'
+        )
+
+    def fit(self, X, y=None):
+        x_cat = X.select_dtypes(include=['object'])
+        self._oh.fit(x_cat)
+        self.feature_names_ = self._oh.get_feature_names_out(x_cat.columns)
+        return self
+
+    def transform(self, X, y=None):
+        x_cat = X.select_dtypes(include=['object'])
+        x_num = X.select_dtypes(exclude=['object'])
+        x_cat_oh = self._oh.transform(x_cat)
+        x_cat_df = pd.DataFrame(
+            x_cat_oh,
+            columns=self.feature_names_,
+            index=X.index
+        )
+        return pd.concat([x_num, x_cat_df], axis=1)
+    </code></pre>
+
+    <h2>2️⃣ Pipelines Personalizados</h2>
+
+    <p>
+        Los Pipelines permiten agrupar múltiples transformaciones en un solo flujo
+        de procesamiento, mejorando la reutilización y organización del código.
+    </p>
+
+    <h3>Pipeline para atributos numéricos</h3>
+
+    <pre><code>
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import RobustScaler
+from sklearn.impute import SimpleImputer
+
+num_pipeline = Pipeline([
+    ('imputer', SimpleImputer(strategy="median")),
+    ('scaler', RobustScaler())
+])
+    </code></pre>
+
+    <h2>3️⃣ ColumnTransformer</h2>
+
+    <p>
+        <strong>ColumnTransformer</strong> permite ejecutar múltiples pipelines en paralelo
+        y concatenar sus resultados en una sola matriz numérica.
+    </p>
+
+    <pre><code>
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder
+
+num_attributes = list(X_train.select_dtypes(exclude=['object']).columns)
+cat_attributes = list(X_train.select_dtypes(include=['object']).columns)
+
+full_pipeline = ColumnTransformer([
+    ("num", num_pipeline, num_attributes),
+    ("cat", OneHotEncoder(
+        sparse_output=False,
+        handle_unknown='ignore'
+    ), cat_attributes)
+])
+
+X_train_prep = full_pipeline.fit_transform(X_train)
+    </code></pre>
+
+    <div class="footer">
+        Transformadores y Pipelines Personalizados | NSL-KDD · Scikit-Learn
+    </div>
+
+</div>
+
+</body>
+</html>

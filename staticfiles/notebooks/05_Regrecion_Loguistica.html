@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Regresión Logística - Detección de SPAM</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 40px;
+            font-family: "Segoe UI", Tahoma, sans-serif;
+            background: linear-gradient(120deg, #0f2027, #203a43, #2c5364);
+            color: #333;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #0f2027;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #2c5364;
+            margin-top: 40px;
+            border-left: 6px solid #2c5364;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #203a43;
+        }
+
+        p {
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        .info-box {
+            background: #eef4f7;
+            border-left: 6px solid #0f2027;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 25px 0;
+        }
+
+        .cards {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .card {
+            flex: 1;
+            min-width: 260px;
+            background: linear-gradient(135deg, #2c5364, #0f2027);
+            color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+        }
+
+        .card h3 {
+            margin-top: 0;
+        }
+
+        ul {
+            margin-top: 10px;
+        }
+
+        ul li {
+            margin-bottom: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th {
+            background: #2c5364;
+            color: white;
+            padding: 12px;
+        }
+
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <h1>Regresión Logística: Detección de SPAM</h1>
+
+        <div class="info-box">
+            <p>
+                En este ejercicio se muestran los fundamentos de la <strong>Regresión Logística</strong>, 
+                abordando uno de los primeros problemas resueltos mediante técnicas de 
+                <strong>Machine Learning</strong>: la detección de correos electrónicos SPAM.
+            </p>
+            <p>
+                El resultado del modelo es una <strong>probabilidad en un rango de 0 a 100</strong>, 
+                y no una predicción categórica directa.
+            </p>
+        </div>
+
+        <h2>Enunciado del ejercicio</h2>
+
+        <p>
+            Se propone la construcción de un sistema de aprendizaje automático capaz de predecir
+            si un correo electrónico corresponde a un mensaje <strong>SPAM</strong> o <strong>HAM</strong>.
+            Para ello, se utiliza el dataset <strong>trec07p</strong>.
+        </p>
+
+        <div class="cards">
+            <div class="card">
+                <h3>📧 Dataset trec07p</h3>
+                <p><strong>Total de mensajes:</strong> 75,419</p>
+                <p><strong>Periodo:</strong></p>
+                <p>
+                    8 de abril de 2007<br>
+                    al 6 de julio de 2007
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>📊 Distribución</h3>
+                <p><strong>Ham:</strong> 25,220</p>
+                <p><strong>Spam:</strong> 50,199</p>
+            </div>
+        </div>
+
+        <h2>Funciones complementarias</h2>
+
+        <p>
+            El dataset está compuesto por correos electrónicos que incluyen cabeceras y campos
+            adicionales, lo que hace necesario un <strong>preprocesamiento previo</strong> antes de
+            aplicar el algoritmo de Machine Learning.
+        </p>
+
+        <div class="info-box">
+            <p>
+                Estas funciones permiten reducir el ruido presente en los mensajes y mejorar
+                el rendimiento del modelo de regresión logística.
+            </p>
+        </div>
+
+        <ul>
+            <li>Eliminación de etiquetas HTML.</li>
+            <li>Eliminación de signos de puntuación.</li>
+            <li>Eliminación de campos no relevantes del correo.</li>
+            <li>Aplicación de <strong>Stemming</strong> para conservar la raíz de las palabras.</li>
+        </ul>
+
+        <div class="footer">
+            <p>Regresión Logística – Detección de SPAM | Machine Learning</p>
+        </div>
+
+    </div>
+
+</body>
+</html>

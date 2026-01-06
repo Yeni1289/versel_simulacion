@@ -1,0 +1,18 @@
+{
+  "builds": [
+    {
+      "src": "visor_notebooks/wsgi.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "visor_notebooks/wsgi.py"
+    }
+  ]
+}
