@@ -4,13 +4,32 @@ from django.conf import settings
 import os
 
 ARCHIVOS = [
-    {'numero': 5, 'titulo': 'Regresión Logística', 'file': '05_Regrecion_Loguistica.html'},
-    {'numero': 6, 'titulo': 'Visualización del DataSet', 'file': '06_Visualizacion_DtaSet.html'},
-    {'numero': 7, 'titulo': 'División del DataSet', 'file': '07_Divicion_del_DataSet.html'},
-    {'numero': 8, 'titulo': 'Preparación del DataSet', 'file': '08_Preparacion_del_DataSet.html'},
-    {'numero': 9, 'titulo': 'Transformadores y Pipeline', 'file': '09_Creacion-de-Transformadores-y-Pipeline-Personalizados.html'},
-    {'numero': 10, 'titulo': 'Evaluación de Resultados', 'file': '10_Evalucion-de-Resultados.html'},
+    {'numero': 5, 'titulo': 'Regresión Logística',
+     'file': '05_Regrecion_Loguistica2.html',
+     'original': '05_Regrecion_Loguistica.html'},
+
+    {'numero': 6, 'titulo': 'Visualización del DataSet',
+     'file': '06_Visualizacion_DtaSet2.html',
+     'original': '06_Visualizacion_DtaSet.html'},
+
+    {'numero': 7, 'titulo': 'División del DataSet',
+     'file': '07_Divicion_del_DataSet2.html',
+     'original': '07_Divicion_del_DataSet.html'},
+
+    {'numero': 8, 'titulo': 'Preparación del DataSet',
+     'file': '08_Preparacion_del_DataSet2.html',
+     'original': '08_Preparacion_del_DataSet.html'},
+
+    {'numero': 9, 'titulo': 'Transformadores y Pipeline',
+     'file': '09_Creacion-de-Transformadores-y-Pipeline-Personalizados2.html',
+     'original': '09_Creacion-de-Transformadores-y-Pipeline-Personalizados.html'},
+
+    {'numero': 10, 'titulo': 'Evaluación de Resultados',
+     'file': '10_Evalucion-de-Resultados2.html',
+     'original': '10_Evalucion-de-Resultados.html'},
 ]
+
+
 
 
 # Información específica para cada práctica, usada para el menú lateral
@@ -56,13 +75,15 @@ def ver_practica(request, numero):
     })
 
     context = {
-        'archivo': os.path.join('notebooks', archivo_obj['file']),
-        'numero': numero,
-        'titulo': archivo_obj['titulo'],
-        'practica_info': practica_info,
-        'practicas': practicas,
-        'prev_num': prev_num,
-        'next_num': next_num,
-    }
+    'archivo': f"notebooks/{archivo_obj['file']}",              # visor
+    'archivo_original': f"notebooks/{archivo_obj['original']}", # botón Abrir
+    'numero': numero,
+    'titulo': archivo_obj['titulo'],
+    'practica_info': practica_info,
+    'practicas': practicas,
+    'prev_num': prev_num,
+    'next_num': next_num,
+}
+
 
     return render(request, 'visor.html', context)

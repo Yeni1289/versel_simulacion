@@ -160,10 +160,12 @@ body {
             </button>
           {% endif %}
 
-          <a class="btn btn-warning fw-semibold"
-             href="{% static archivo %}" target="_blank" rel="noopener">
-             Abrir
+         <a class="btn btn-warning fw-semibold"
+                href="{% static archivo_original %}"
+                target="_blank" rel="noopener">
+              Abrir
           </a>
+
 
           {% if next_num %}
             <a class="btn btn-outline-light" href="{% url 'ver_practica' next_num %}">»</a>
