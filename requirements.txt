@@ -105,3 +105,4 @@ python-json-logger==4.0.0
 PythonTurtle==0.3.2
 pytz==2025.2
 pywalk==0.0.2
+whitenoise==6.5.0
